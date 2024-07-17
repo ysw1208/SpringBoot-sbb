@@ -75,6 +75,16 @@
 		document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
 		document.getElementById('searchForm').submit();
 	});
+	
+	// 엔터키로 검색 기능 추가
+	  document.getElementById("search_kw").addEventListener("keypress", function(event) {
+	      if (event.keyCode === 13) { // 엔터키를 눌렀을 때
+	          event.preventDefault(); // 기본 이벤트를 막습니다 (폼 제출 방지)
+	          document.getElementById('kw').value = this.value;
+	          document.getElementById('page').value = 0;  // 엔터키로 검색 시 첫 페이지부터 조회
+	          document.getElementById('searchForm').submit();
+	      }
+	  });
 </script>
 
 </html>
