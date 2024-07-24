@@ -1,14 +1,14 @@
 package com.mysite.sbb.user;
 
-import jakarta.validation.Valid;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -50,5 +50,10 @@ public class UserController {
 	@GetMapping("/login")
 	public String login() {
 		return "login_form";
+	}
+	
+	@GetMapping("/profile")
+	public String profile(Model model) {
+		return "profile_form";
 	}
 }
