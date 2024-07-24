@@ -3,6 +3,7 @@ package com.mysite.sbb.answer;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.sbb.question.Question;
@@ -30,6 +32,13 @@ public class AnswerController {
 	private final AnswerService answerService;
 	private final UserService userService;
 
+	@GetMapping("/page")
+	public String page(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+		Page<Answer> paging = this.answerService.getPage(page);
+		model.addAttribute("paging", paging);
+		return "answer_page";
+	}
+
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{id}")
 	public String createAnswer(Model model, @PathVariable("id") Integer id, @Valid AnswerForm answerForm,
@@ -41,7 +50,7 @@ public class AnswerController {
 			return "question_detail";
 		}
 		Answer answer = this.answerService.create(question, answerForm.getContent(), siteUser);
-		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(),answer.getId());
+		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -89,4 +98,5 @@ public class AnswerController {
 		this.answerService.vote(answer, siteUser);
 		return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
 	}
+
 }

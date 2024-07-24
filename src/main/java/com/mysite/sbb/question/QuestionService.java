@@ -55,15 +55,19 @@ public class QuestionService {
 		return this.questionRepository.findAll(spec,pageable);
 //		return this.questionRepository.findAllByKeyword(kw, pageable);
 	}
-
+	
+//	조회 수 서비스
 	public Question getQuestion(Integer id) {
-		Optional<Question> question = this.questionRepository.findById(id);
-		if (question.isPresent()) {
-			return question.get();
-		} else {
-			throw new DataNotFoundException("question not found");
-		}
-	}
+        Optional<Question> question = this.questionRepository.findById(id);
+        if(question.isPresent()) {
+            Question question1 = question.get(); // 특정 게시물을 가져옴
+            question1.setView(question1.getView() + 1); // 조회수 1 증가
+            this.questionRepository.save(question1); // 변경 사항을 데이터베이스에 저장
+            return question1;
+        } else {
+            throw new DataNotFoundException("question not found");
+        }
+    }
 
 	public void create(String subject, String content, SiteUser user) {
 		Question q = new Question();
