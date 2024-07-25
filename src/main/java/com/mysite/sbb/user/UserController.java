@@ -1,6 +1,8 @@
 package com.mysite.sbb.user;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,13 +49,12 @@ public class UserController {
 		}
 		return "redirect:/";
 	}
+
 	@GetMapping("/login")
 	public String login() {
 		return "login_form";
 	}
 	
-	@GetMapping("/profile")
-	public String profile(Model model) {
-		return "profile_form";
-	}
+	
+
 }
